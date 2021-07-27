@@ -1,0 +1,12 @@
+kind: Pod
+metadata:
+  name: maven-alpine-pod
+spec:
+  securityContext:
+    runAsUser: 1000
+  containers:
+  - name: maven
+    image: maven:3-alpine
+    command:
+    - cat
+    tty: true

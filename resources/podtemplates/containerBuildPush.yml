@@ -1,0 +1,37 @@
+kind: Pod
+metadata:
+  name: img
+  labels:
+    run: img
+spec:
+  containers:
+  - name: gcp-sdk
+    image: google/cloud-sdk:252.0.0-slim
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+      - name: gcp-logs
+        mountPath: /.config/gcloud/logs
+  - name: img
+    image: jess/img@sha256:cb74904de18d88e4f7e505006535b25c91305a09a5a62909d4920f75e97ccd4b
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true
+    securityContext:
+      privileged: true
+    volumeMounts:
+    - name: json-key
+      mountPath: /home/user/key/
+    - name: cache-volume
+      mountPath: /tmp/
+  volumes:
+  - name: json-key
+    secret:
+      secretName: gcr-key
+  - name: cache-volume
+    emptyDir: {}
+  - name: gcp-logs
+    emptyDir: {}
+  restartPolicy: Never

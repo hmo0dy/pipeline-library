@@ -1,0 +1,23 @@
+kind: Pod
+metadata:
+  name: gsutil
+spec:
+  serviceAccountName: jenkins
+  containers:
+  - name: gsutil
+    image: gcr.io/cloud-builders/gsutil:latest
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+      - name: gcloud
+        mountPath: /.config/gcloud 
+      - name: gsutil
+        mountPath: /.gsutil
+  volumes:
+  - name: gcloud
+    emptyDir: {}
+  - name: gsutil
+    emptyDir: {}
+  securityContext:
+    runAsUser: 1000
